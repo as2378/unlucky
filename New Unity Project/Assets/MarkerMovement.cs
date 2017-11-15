@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class MarkerMovement : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class MarkerMovement : MonoBehaviour
     public float limit = 10;
     public float MaxSpeed = 15;
     public float SpeedRange = 10;
+    public bool stop = false;
 
     //	Mathf.Abs( 50 * Mathf.Sin((transform.position.y/8.5)* Mathf.PI *2) +1 ) ;
     public bool up = true;
@@ -18,25 +21,43 @@ public class MarkerMovement : MonoBehaviour
     void Update()
     {
         float Position = transform.position.y / limit;
-        movementSpeed = MaxSpeed - (SpeedRange * Mathf.Sin(Mathf.PI * 0.5f * Mathf.Abs(Position)));
-        if (up == true)
+        if (stop == false)
         {
-
-            transform.Translate(Vector3.up * movementSpeed * Time.deltaTime);
-
-            if (transform.position.y >= limit)
+            movementSpeed = MaxSpeed - (SpeedRange * Mathf.Sin(Mathf.PI * 0.5f * Mathf.Abs(Position)));
+            if (up == true)
             {
-                up = false;
+
+                transform.Translate(Vector3.up * movementSpeed * Time.deltaTime);
+
+                if (transform.position.y >= limit)
+                {
+                    up = false;
+                }
             }
-        }
-        else
-        {
-            transform.Translate(Vector3.down * movementSpeed * Time.deltaTime);
-
-            if (transform.position.y <= -limit)
+            else
             {
-                up = true;
+                transform.Translate(Vector3.down * movementSpeed * Time.deltaTime);
+
+                if (transform.position.y <= -limit)
+                {
+                    up = true;
+                }
             }
         }
     }
+
+
+    public void StopButton()
+    {
+        stop = true;
+        StartCoroutine(waiter()); ;
+        SceneManager.LoadScene("MainGame");
+    }
+
+    IEnumerator waiter()
+    {
+        yield return new WaitForSeconds(4);
+    }
+
+
 }
