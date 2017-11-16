@@ -16,19 +16,14 @@ public class Sector : MonoBehaviour
     private int units = 0;
 
     private Position spawn_position;
-    private List<string> adj_sectors = new List<string>();
+    private List<GameObject> adjacent_sectors = new List<GameObject>();
 
-	// Following fields are set via the inspector in Unity
+    // Following fields are set via the inspector in Unity
     public double spawn_position_x;
     public double spawn_position_y;
     public double spawn_position_z;
 
-    private int num_of_adj_sectors = 5;
-    public string adj_sector1 = "-1";
-    public string adj_sector2 = "-1";
-    public string adj_sector3 = "-1";
-    public string adj_sector4 = "-1";
-    public string adj_sector5 = "-1";
+    public List<int> adjacent_sector_ids = new List<int>();
 
     public bool is_college;
 
@@ -43,14 +38,39 @@ public class Sector : MonoBehaviour
         this.spawn_position.y = spawn_position_y;
         this.spawn_position.z = spawn_position_z;
 
-        for(int i = 1; i <= num_of_adj_sectors; i++)
+        if (adjacent_sector_ids.Count > 0)
         {
-            string value = (string)this.GetType().GetField("adj_sector" + i).GetValue(this);
-
-            if(value != "-1")
+            foreach (int sector_id in adjacent_sector_ids)
             {
-                adj_sectors.Add(value);
+                GameObject sector = GameObject.Find("/Map/Sector #" + sector_id);
+
+                if (sector != null)
+                {
+                    if (sector.name != name)
+                    {
+                        if (!adjacent_sectors.Contains(sector))
+                        {
+                            adjacent_sectors.Add(sector);
+                        }
+                        else
+                        {
+                            throw new System.Exception("In '/Map/" + name + "': \"adjacent_sectors\" list cannot contain duplicates.");
+                        }
+                    }
+                    else
+                    {
+                        throw new System.Exception("In '/Map/" + name + "': A sector cannot be adjacent to itself.");
+                    }
+                }
+                else
+                {
+                    throw new System.Exception("In '/Map/" + name + "': /Map/Sector #" + sector_id + " cannot be found.");
+                }
             }
+        }
+        else
+        {
+            throw new System.Exception("In '/Map/" + name + "': A sector must have at least one adjacent sector.");
         }
     }
 
@@ -77,8 +97,8 @@ public class Sector : MonoBehaviour
         get { return spawn_position; }
     }
 
-    public List<string> AdjSectors
+    public List<GameObject> AdjacentSectors
     {
-        get { return adj_sectors; }
+        get { return adjacent_sectors; }
     }
 }

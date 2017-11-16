@@ -4,38 +4,40 @@ using UnityEngine;
 
 public class MapClass : MonoBehaviour {
 
-	private List<List<GameObject>> sectorGraph = new List<List<GameObject>>();
+	private List<List<GameObject>> sector_graph = new List<List<GameObject>>();
 
 	// Use this for initialization
-	void Start () {
-		foreach (Transform child in transform){
+	void Start() {
+		foreach (Transform child in transform) {
 			if (child.name.Substring (0, 6) == "Sector") {
-				List<GameObject> currentSector = new List<GameObject> ();
-				currentSector.Add (child.gameObject);
-				SectorClass sect_cls = child.GetComponent<SectorClass> ();
-				List<GameObject> adjacent_sectors = sect_cls.get_adjacent_sectors ();
+				List<GameObject> current_sector = new List<GameObject>();
+                Sector sector = child.GetComponent<Sector>();
+                List<GameObject> adjacent_sectors = sector.AdjacentSectors;
 
-				currentSector.AddRange (adjacent_sectors);
-				this.sectorGraph.Add (currentSector);
+                current_sector.Add(child.gameObject);
+				current_sector.AddRange(adjacent_sectors);
+				this.sector_graph.Add(current_sector);
 			}
 		}
 
-		this.print_sectorGraph ();
+		//this.printSectorGraph();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		
 	}
 
-	private void print_sectorGraph(){
+	private void printSectorGraph() {
 		//Printing sectors (for debug);
-		foreach (List<GameObject> x in this.sectorGraph) {
+		foreach (List<GameObject> x in this.sector_graph) {
 			string output = "";
-			foreach (GameObject y in x) {
+
+            foreach (GameObject y in x) {
 				output += y.name + " ";
 			}
-			print (output);
+
+			print(output);
 		}
 	}
 }
