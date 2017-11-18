@@ -99,6 +99,6 @@ public class Sector : MonoBehaviour
 
     public List<GameObject> AdjacentSectors
     {
-        get { return adjacent_sectors; }
+		get { return adjacent_sectors; }
     }
 }

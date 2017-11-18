@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapClass : MonoBehaviour {
-
-	private List<List<GameObject>> sector_graph = new List<List<GameObject>>();
+	
+	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>(); //Key = Sector, Data = list of sectors adjacent to key.
 
 	// Use this for initialization
 	void Start() {
-		foreach (Transform child in transform) {
-			if (child.name.Substring (0, 6) == "Sector") {
-				List<GameObject> current_sector = new List<GameObject>();
+		foreach (Transform child in transform) 
+		{
+			if (child.name.Substring (0, 6) == "Sector") 
+			{
                 Sector sector = child.GetComponent<Sector>();
-                List<GameObject> adjacent_sectors = sector.AdjacentSectors;
+				List<GameObject> adjacent_sectors = sector.AdjacentSectors;
 
-                current_sector.Add(child.gameObject);
-				current_sector.AddRange(adjacent_sectors);
-				this.sector_graph.Add(current_sector);
+				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
 		}
 
@@ -30,14 +29,14 @@ public class MapClass : MonoBehaviour {
 
 	private void printSectorGraph() {
 		//Printing sectors (for debug);
-		foreach (List<GameObject> x in this.sector_graph) {
-			string output = "";
-
-            foreach (GameObject y in x) {
-				output += y.name + " ";
+		foreach (GameObject key in this.sector_graph.Keys) 
+		{
+			string output = key.name + ": ";
+			foreach (GameObject adjSect in this.sector_graph[key]) 
+			{
+				output += adjSect.name + " ";
 			}
-
-			print(output);
+			print (output);
 		}
 	}
 }
