@@ -21,7 +21,20 @@ public class MapClass : MonoBehaviour {
 
 		//this.printSectorGraph();
 	}
-	
+
+	public GameObject getSelectedSector()
+	{
+		foreach (GameObject sector in sector_graph.Keys) {
+			if (sector.GetComponent<Sector>().Selected == true) {
+				return sector;
+			}
+		}
+		return null;
+	}
+
+
+
+
 	// Update is called once per frame
 	void Update() {
 		

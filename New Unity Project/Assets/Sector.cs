@@ -15,29 +15,18 @@ public class Sector : MonoBehaviour
     private int defence_value = 0;
     private int units = 0;
 
-    private Position spawn_position;
     private List<GameObject> adjacent_sectors = new List<GameObject>();
 
     // Following fields are set via the inspector in Unity
-    public double spawn_position_x;
-    public double spawn_position_y;
-    public double spawn_position_z;
-
     public List<int> adjacent_sector_ids = new List<int>();
 
     public bool is_college;
 
-    public struct Position
-    {
-        public double x, y, z;
-    }
+	private bool selected = false;
+	private string playerName;
 
     void Start()
     {
-        this.spawn_position.x = spawn_position_x;
-        this.spawn_position.y = spawn_position_y;
-        this.spawn_position.z = spawn_position_z;
-
         if (adjacent_sector_ids.Count > 0)
         {
             foreach (int sector_id in adjacent_sector_ids)
@@ -74,6 +63,53 @@ public class Sector : MonoBehaviour
         }
     }
 
+	void OnMouseDown()
+	{
+		MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
+		GameObject originalSector = map.getSelectedSector ();
+		if (originalSector != null) 
+		{
+			if (this.adjacent_sectors.Contains (originalSector)) 
+			{
+				Sector originalSectorClass = originalSector.GetComponent<Sector> ();
+				if (this.playerName == originalSectorClass.PlayerName && GameClass.GameState == GameClass.MOVEMENT) 
+				{
+					//Move Gang members
+				} 
+				else if (this.playerName != originalSectorClass.PlayerName && GameClass.GameState == GameClass.ATTACK) 
+				{
+					//Attack from originalSector to this.
+				}
+			}
+		} else {
+			if (this.playerName == GameClass.CurrentPlayer) 
+			{
+				SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
+				sprite.color = new Color (0, 0, 0, 1);
+				if (GameClass.GameState == GameClass.MOVEMENT) 
+				{
+					foreach (GameObject adjSect in adjacent_sectors) 
+					{
+						if (adjSect.GetComponent<Sector> ().PlayerName == this.playerName) 
+						{
+							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 100, 1);
+						}
+					}
+				} 
+				else 
+				{
+					foreach (GameObject adjSect in adjacent_sectors) 
+					{
+						if (adjSect.GetComponent<Sector> ().PlayerName != this.playerName) 
+						{
+							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 100, 1);
+						}
+					}
+				}
+			}
+		}
+	}
+
     public int Attack
     {
         get { return attack_value; }
@@ -92,13 +128,19 @@ public class Sector : MonoBehaviour
         set { units = value; }
     }
 
-    public Position SpawnPosition
-    {
-        get { return spawn_position; }
-    }
-
     public List<GameObject> AdjacentSectors
     {
 		get { return adjacent_sectors; }
     }
+
+	public bool Selected 
+	{
+		get { return selected; }
+	}
+
+	public string PlayerName
+	{
+		get { return playerName; }
+		set { playerName = value; }
+	}
 }
