@@ -50,14 +50,9 @@ public class MarkerMovement : MonoBehaviour
     public void StopButton()
     {
         stop = true;
-        StartCoroutine(waiter()); ;
         SceneManager.LoadScene("MainGame");
     }
 
-    IEnumerator waiter()
-    {
-        yield return new WaitForSeconds(4);
-    }
 
 
 }

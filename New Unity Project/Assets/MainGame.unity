@@ -122,11 +122,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -3.085
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3.004
+      value: 1.19
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalPosition.z
@@ -158,11 +158,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114967639101797998, guid: 4d52b3603df38304ab61a0d673206377,
         type: 2}
@@ -272,11 +272,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.74
+      value: -1.36
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.24
+      value: 2.21
       objectReference: {fileID: 0}
     - target: {fileID: 4447389563801552, guid: 4d52b3603df38304ab61a0d673206377, type: 2}
       propertyPath: m_LocalPosition.z
@@ -580,9 +580,23 @@ Prefab:
       propertyPath: adjacent_sector_ids.Array.data[0]
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 65121070676482980, guid: 4d52b3603df38304ab61a0d673206377,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212913111124291438, guid: 4d52b3603df38304ab61a0d673206377,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212913111124291438, guid: 4d52b3603df38304ab61a0d673206377,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212913111124291438, guid: 4d52b3603df38304ab61a0d673206377,
+        type: 2}
+      propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

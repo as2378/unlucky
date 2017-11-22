@@ -8,6 +8,7 @@ public class MapClass : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
+       
 		foreach (Transform child in transform) 
 		{
 			if (child.name.Substring (0, 6) == "Sector") 
@@ -18,10 +19,30 @@ public class MapClass : MonoBehaviour {
 				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
 		}
+<<<<<<< HEAD
+       
+        //this.printSectorGraph();
+    }
+	
+=======
 
 		//this.printSectorGraph();
 	}
-	
+
+	public GameObject getSelectedSector()
+	{
+		foreach (GameObject sector in sector_graph.Keys) {
+			if (sector.GetComponent<Sector>().Selected == true) {
+				return sector;
+			}
+		}
+		return null;
+	}
+
+
+
+
+>>>>>>> 37872798b6be49487742209534a560355f0fc82c
 	// Update is called once per frame
 	void Update() {
 		
