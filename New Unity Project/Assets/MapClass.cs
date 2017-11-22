@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * The class is used as a collection of sectors.
+ * 
+ * It is attached to the 'Map' GameObject
+ */
 public class MapClass : MonoBehaviour {
-	
-	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>(); //Key = Sector, Data = list of sectors adjacent to key.
+	//Key = Sector, Data = list of sectors adjacent to key.
+	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>(); 
 
-	// Use this for initialization
+	/*
+	 * Start: called when the game is initiated.
+	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
+	 */
 	void Start() {
 		foreach (Transform child in transform) 
 		{
@@ -18,10 +26,14 @@ public class MapClass : MonoBehaviour {
 				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
 		}
-
-		//this.printSectorGraph();
 	}
-
+		
+	/* 
+	 * getSelectedSector():
+	 * Return:  The sector where it's Selected attribute is true;
+	 * 			otherwise: null. 
+	 * Searches through all sectors in the game until a Selected one is found.
+	 */
 	public GameObject getSelectedSector()
 	{
 		foreach (GameObject sector in sector_graph.Keys) {
@@ -30,14 +42,6 @@ public class MapClass : MonoBehaviour {
 			}
 		}
 		return null;
-	}
-
-
-
-
-	// Update is called once per frame
-	void Update() {
-		
 	}
 
 	private void printSectorGraph() {

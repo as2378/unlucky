@@ -14,17 +14,19 @@ public class Sector : MonoBehaviour
     private int attack_value = 0;
     private int defence_value = 0;
     private int units = 0;
-
     private List<GameObject> adjacent_sectors = new List<GameObject>();
-
-    // Following fields are set via the inspector in Unity
-    public List<int> adjacent_sector_ids = new List<int>();
-
-    public bool is_college;
-
 	private bool selected = false;
 	private string playerName;
 
+    // Following fields are set via the inspector in Unity
+    public List<int> adjacent_sector_ids = new List<int>();
+    public bool is_college;
+
+	/*
+	 * This method is called at the start of the game.
+	 * It takes the adjacent_sector_ids from the inspector and converts them into a list
+	 * of adjacent sector GameObjects.
+	 */
     void Start()
     {
         if (adjacent_sector_ids.Count > 0)
@@ -63,6 +65,12 @@ public class Sector : MonoBehaviour
         }
     }
 
+	/*
+	 * OnMouseDown(): called when the sector is clicked.
+	 * It handles the logic behind selecting which action to be taken (Attack, Movement or sector Highlighting)
+	 * depending on if another sector is selected, whether the turn is on an Attacking or Movement phase,
+	 * and the ownership of the current sector compared to the original.
+	 */
 	void OnMouseDown()
 	{
 		MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
@@ -74,37 +82,48 @@ public class Sector : MonoBehaviour
 				Sector originalSectorClass = originalSector.GetComponent<Sector> ();
 				if (this.playerName == originalSectorClass.PlayerName && GameClass.GameState == GameClass.MOVEMENT) 
 				{
-					//Move Gang members
+					//Move Gang members from originalSector to currentSector (this).
+					//print("Move gang members from " + originalSector.name + " to " + name);
 				} 
 				else if (this.playerName != originalSectorClass.PlayerName && GameClass.GameState == GameClass.ATTACK) 
 				{
-					//Attack from originalSector to this.
+					//Attack from originalSector to currentSector (this).
+					//print("Attack " + name + " from " + originalSector.name);
 				}
 			}
 		} else {
 			if (this.playerName == GameClass.CurrentPlayer) 
 			{
-				SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
-				sprite.color = new Color (0, 0, 0, 1);
-				if (GameClass.GameState == GameClass.MOVEMENT) 
+				int sectorsHighlighted = 0;
+				foreach (GameObject adjSect in adjacent_sectors) 
 				{
-					foreach (GameObject adjSect in adjacent_sectors) 
+					if (GameClass.GameState == GameClass.MOVEMENT) 
 					{
 						if (adjSect.GetComponent<Sector> ().PlayerName == this.playerName) 
 						{
-							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 100, 1);
+							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
+							sectorsHighlighted++;
 						}
-					}
-				} 
-				else 
-				{
-					foreach (GameObject adjSect in adjacent_sectors) 
+					} 
+					else 
 					{
 						if (adjSect.GetComponent<Sector> ().PlayerName != this.playerName) 
 						{
-							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 100, 1);
+							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
+							sectorsHighlighted++;
 						}
 					}
+				}
+				if (sectorsHighlighted > 0) 
+				{
+					SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
+					sprite.color = new Color (0, 0, 0, 1);
+					this.selected = true;
+				}
+				else
+				{
+					// No valid moves from clicked sector
+					//print("No valid moves from clicked sector");
 				}
 			}
 		}
