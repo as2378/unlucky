@@ -18,7 +18,7 @@ public class MapClass : MonoBehaviour {
 	void Start() {
 		foreach (Transform child in transform) 
 		{
-			if (child.name.Substring (0, 6) == "Sector") 
+			if (child.name.Substring (0, 8) == "Sector #") 
 			{
                 Sector sector = child.GetComponent<Sector>();
 				List<GameObject> adjacent_sectors = sector.AdjacentSectors;
