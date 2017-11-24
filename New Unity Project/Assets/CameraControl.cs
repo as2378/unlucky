@@ -2,79 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/*
- * The class used to control the camera movements within the game.
- * 
- * CameraControl enables the camera to be moved by positioning the mouse cursor at the edge of the screen.
- * The camera moves until it reaches the edge of the map.
- */
-
 public class CameraControl : MonoBehaviour {
 	public float speed;
 	public float boundarySize;
 
-	private Bounds mapBounds;
-
-	void Start()
-	{
-		this.mapBounds = GameObject.Find ("Map").GetComponent<SpriteRenderer> ().bounds;
-	}
-
 	void FixedUpdate () 
 	{
+		Bounds mapBounds = GameObject.Find ("Map").GetComponent<SpriteRenderer> ().bounds;
 		Camera cam = GetComponent<Camera> ();
 
 		float camHeight = cam.orthographicSize;
 		float camWidth = cam.aspect * camHeight;
 
-		List<string> directions = this.getMovementDirection ();
+		List<string> directions = this.getMovementDirection (cam,camWidth,camHeight);
 
-		if(directions.Contains("Right"))
-		{
-			if (transform.position.x + camWidth + speed <= mapBounds.max.x) 
-			{
+		if(directions.Contains("Right")){
+			if (transform.position.x + camWidth + speed <= mapBounds.max.x) {
 				transform.position += new Vector3 (speed, 0, 0);
 			}
 		}
-		if (directions.Contains("Left")) 
-		{
-			if (transform.position.x - camWidth - speed >= mapBounds.min.x) 
-			{
+		if (directions.Contains("Left")) {
+			if (transform.position.x - camWidth - speed >= mapBounds.min.x) {
 				transform.position += new Vector3 (-speed, 0, 0);
 			}
 		}
-		if(directions.Contains("Up"))
-		{
-			if (transform.position.y + camHeight + speed <= mapBounds.max.y) 
-			{
+		if(directions.Contains("Up")){
+			if (transform.position.y + camHeight + speed <= mapBounds.max.y) {
 				transform.position += new Vector3 (0, speed, 0);
 			}
 		}
-		if (directions.Contains("Down")) 
-		{
-			if (transform.position.y - camHeight - speed >= mapBounds.min.y) 
-			{
+		if (directions.Contains("Down")) {
+			if (transform.position.y - camHeight - speed >= mapBounds.min.y) {
 				transform.position += new Vector3 (0, -speed, 0);
 			}
 		}
 	}
 
-
-	/*
-	 * getMovementDirection: called within FixedUpdate()
-	 * Returns: List of strings containing textual representations of the directions the player want the camera to move in.
-	 * 
-	 * Finds the mouse position and compares it to the screen. If the mouse is closer to the edge than the distance 'boundarySize'
-	 * then the direction is added to the directions list.
-	 */
-	private List<string> getMovementDirection()
+	private List<string> getMovementDirection(Camera cam,float camWidth, float camHeight)
 	{
-		List<string> directions = new List<string> ();
 		Vector2 mousePosition = new Vector2 (Input.mousePosition.x,Input.mousePosition.y);
 
 		float screenWidth = Screen.width;
 		float screenHeight = Screen.height;
+
+		List<string> directions = new List<string> ();
 
 		if (mousePosition.x >= screenWidth - boundarySize)
 		{
