@@ -16,7 +16,7 @@ public class Sector : MonoBehaviour
     private int units = 0;
     private List<GameObject> adjacent_sectors = new List<GameObject>();
 	private bool selected = false;
-	private string playerName;
+	public string playerName;
 
     // Following fields are set via the inspector in Unity
     public List<int> adjacent_sector_ids = new List<int>();
@@ -73,57 +73,46 @@ public class Sector : MonoBehaviour
 	 */
 	void OnMouseDown()
 	{
-		MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
-		GameObject originalSector = map.getSelectedSector ();
-		if (originalSector != null) 
-		{
-			if (this.adjacent_sectors.Contains (originalSector)) 
-			{
-				Sector originalSectorClass = originalSector.GetComponent<Sector> ();
-				if (this.playerName == originalSectorClass.PlayerName && GameClass.GameState == GameClass.MOVEMENT) 
-				{
-					//Move Gang members from originalSector to currentSector (this).
-					//print("Move gang members from " + originalSector.name + " to " + name);
-				} 
-				else if (this.playerName != originalSectorClass.PlayerName && GameClass.GameState == GameClass.ATTACK) 
-				{
-					//Attack from originalSector to currentSector (this).
-					//print("Attack " + name + " from " + originalSector.name);
-				}
-			}
-		} else {
-			if (this.playerName == GameClass.CurrentPlayer) 
-			{
-				int sectorsHighlighted = 0;
-				foreach (GameObject adjSect in adjacent_sectors) 
-				{
-					if (GameClass.GameState == GameClass.MOVEMENT) 
-					{
-						if (adjSect.GetComponent<Sector> ().PlayerName == this.playerName) 
-						{
-							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
-							sectorsHighlighted++;
-						}
-					} 
-					else 
-					{
-						if (adjSect.GetComponent<Sector> ().PlayerName != this.playerName) 
-						{
-							adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
-							sectorsHighlighted++;
-						}
+		if (Input.GetMouseButtonDown (0)) {
+			MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
+			GameObject originalSector = map.getSelectedSector ();
+			if (originalSector != null) {
+				if (this.adjacent_sectors.Contains (originalSector)) {
+					Sector originalSectorClass = originalSector.GetComponent<Sector> ();
+					if (this.playerName == originalSectorClass.PlayerName && GameClass.GameState == GameClass.MOVEMENT) {
+						//Move Gang members from originalSector to currentSector (this).
+						print("Move gang members from " + originalSector.name + " to " + name);
+						map.deselectAll ();
+					} else if (this.playerName != originalSectorClass.PlayerName && GameClass.GameState == GameClass.ATTACK) {
+						//Attack from originalSector to currentSector (this).
+						print("Attack " + name + " from " + originalSector.name);
+						map.deselectAll();
 					}
 				}
-				if (sectorsHighlighted > 0) 
-				{
-					SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
-					sprite.color = new Color (0, 0, 0, 1);
-					this.selected = true;
-				}
-				else
-				{
-					// No valid moves from clicked sector
-					//print("No valid moves from clicked sector");
+			} else {
+				if (this.playerName == GameClass.CurrentPlayer.Name) {
+					int sectorsHighlighted = 0;
+					foreach (GameObject adjSect in adjacent_sectors) {
+						if (GameClass.GameState == GameClass.MOVEMENT) {
+							if (adjSect.GetComponent<Sector> ().PlayerName == this.playerName) {
+								adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
+								sectorsHighlighted++;
+							}
+						} else {
+							if (adjSect.GetComponent<Sector> ().PlayerName != this.playerName) {
+								adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
+								sectorsHighlighted++;
+							}
+						}
+					}
+					if (sectorsHighlighted > 0) {
+						SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
+						sprite.color = new Color (0, 0, 0, 1);
+						this.selected = true;
+					} else {
+						// No valid moves from clicked sector
+						//print("No valid moves from clicked sector");
+					}
 				}
 			}
 		}
@@ -155,6 +144,7 @@ public class Sector : MonoBehaviour
 	public bool Selected 
 	{
 		get { return selected; }
+		set { selected = value; }
 	}
 
 	public string PlayerName

@@ -20,14 +20,39 @@ public class MapClass : MonoBehaviour {
 		{
 			if (child.name.Substring (0, 8) == "Sector #") 
 			{
-                Sector sector = child.GetComponent<Sector>();
+				Sector sector = child.GetComponent<Sector>();
 				List<GameObject> adjacent_sectors = sector.AdjacentSectors;
 
 				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
+		}	
+	}
+
+	public void deselectAll(){
+		foreach (GameObject sector in sector_graph.Keys) {
+			sector.GetComponent<SpriteRenderer> ().color = new Color (255, 255, 255, 1);
+			Sector sectorClass = sector.GetComponent<Sector> ();
+			if (sectorClass.Selected == true) {
+				sectorClass.Selected = false;
+			}
 		}
 	}
-		
+
+	void Update()
+	{
+		if (Input.GetMouseButtonDown (1)) {
+			this.deselectAll ();
+		}
+	}
+
+	public void hightlightSectors()
+	{
+		foreach (GameObject sector in sector_graph.Keys) {
+			Sector sectorClass = sector.GetComponent<Sector> ();
+
+		}
+	}
+
 	/* 
 	 * getSelectedSector():
 	 * Return:  The sector where it's Selected attribute is true;
