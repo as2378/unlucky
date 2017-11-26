@@ -16,7 +16,9 @@ public class Sector : MonoBehaviour
     private int units = 0;
     private List<GameObject> adjacent_sectors = new List<GameObject>();
 	private bool selected = false;
+
 	private PlayerClass owner;
+
 
     // Following fields are set via the inspector in Unity
     public List<int> adjacent_sector_ids = new List<int>();
@@ -73,7 +75,9 @@ public class Sector : MonoBehaviour
 	 */
 	void OnMouseDown()
 	{
+
 		if (Input.GetMouseButtonDown (0)) 
+
 		{
 			MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
 			GameObject originalSector = map.getSelectedSector ();

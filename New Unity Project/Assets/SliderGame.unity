@@ -640,6 +640,9 @@ MonoBehaviour:
   limit: 10
   MaxSpeed: 30
   SpeedRange: 20
+  stop: 0
+  Position: 0
+  score: 0
   up: 1
 --- !u!212 &1139692894
 SpriteRenderer:

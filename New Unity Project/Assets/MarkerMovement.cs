@@ -12,6 +12,8 @@ public class MarkerMovement : MonoBehaviour
     public float MaxSpeed = 15;
     public float SpeedRange = 10;
     public bool stop = false;
+    public float Position;
+    public float score;
 
     //	Mathf.Abs( 50 * Mathf.Sin((transform.position.y/8.5)* Mathf.PI *2) +1 ) ;
     public bool up = true;
@@ -20,7 +22,8 @@ public class MarkerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float Position = transform.position.y / limit;
+        score = 1 - Mathf.Abs(Position);
+        Position = transform.position.y / limit;
         if (stop == false)
         {
             movementSpeed = MaxSpeed - (SpeedRange * Mathf.Sin(Mathf.PI * 0.5f * Mathf.Abs(Position)));
@@ -56,7 +59,7 @@ public class MarkerMovement : MonoBehaviour
 
     IEnumerator waiter()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(400);
     }
 
 
