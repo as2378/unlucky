@@ -16,7 +16,7 @@ public class Sector : MonoBehaviour
     private int units = 0;
     private List<GameObject> adjacent_sectors = new List<GameObject>();
 	private bool selected = false;
-	public string playerName;
+	private PlayerClass owner;
 
     // Following fields are set via the inspector in Unity
     public List<int> adjacent_sector_ids = new List<int>();
@@ -73,43 +73,61 @@ public class Sector : MonoBehaviour
 	 */
 	void OnMouseDown()
 	{
-		if (Input.GetMouseButtonDown (0)) {
+		if (Input.GetMouseButtonDown (0)) 
+		{
 			MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
 			GameObject originalSector = map.getSelectedSector ();
-			if (originalSector != null) {
-				if (this.adjacent_sectors.Contains (originalSector)) {
+			if (originalSector != null) 
+			{
+				if (this.adjacent_sectors.Contains (originalSector)) 
+				{
 					Sector originalSectorClass = originalSector.GetComponent<Sector> ();
-					if (this.playerName == originalSectorClass.PlayerName && GameClass.GameState == GameClass.MOVEMENT) {
+					if (this.owner == originalSectorClass.Owner && GameClass.GameState == GameClass.MOVEMENT) 
+					{
 						//Move Gang members from originalSector to currentSector (this).
 						print("Move gang members from " + originalSector.name + " to " + name);
 						map.deselectAll ();
-					} else if (this.playerName != originalSectorClass.PlayerName && GameClass.GameState == GameClass.ATTACK) {
+					} 
+					else if (this.owner != originalSectorClass.Owner && GameClass.GameState == GameClass.ATTACK) 
+					{
 						//Attack from originalSector to currentSector (this).
 						print("Attack " + name + " from " + originalSector.name);
 						map.deselectAll();
 					}
 				}
-			} else {
-				if (this.playerName == GameClass.CurrentPlayer.Name) {
+			}
+			else 
+			{
+				if (this.owner == GameClass.CurrentPlayer) 
+				{
 					int sectorsHighlighted = 0;
-					foreach (GameObject adjSect in adjacent_sectors) {
-						if (GameClass.GameState == GameClass.MOVEMENT) {
-							if (adjSect.GetComponent<Sector> ().PlayerName == this.playerName) {
-								adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
+					foreach (GameObject adjSect in adjacent_sectors) 
+					{
+						if (GameClass.GameState == GameClass.MOVEMENT) 
+						{
+							if (adjSect.GetComponent<Sector> ().Owner == this.owner) 
+							{
+								adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1, 1);
 								sectorsHighlighted++;
 							}
-						} else {
-							if (adjSect.GetComponent<Sector> ().PlayerName != this.playerName) {
-								adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 200, 1);
+						} 
+						else 
+						{
+							if (adjSect.GetComponent<Sector> ().Owner != this.owner) 
+							{
+								adjSect.GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 1);
 								sectorsHighlighted++;
 							}
 						}
 					}
-					if (sectorsHighlighted > 0) {
+					if (sectorsHighlighted > 0) 
+					{
 						SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
 						sprite.color = new Color (0, 0, 0, 1);
 						this.selected = true;
-					} else {
+					} 
+					else 
+					{
 						// No valid moves from clicked sector
 						//print("No valid moves from clicked sector");
 					}
@@ -147,9 +165,9 @@ public class Sector : MonoBehaviour
 		set { selected = value; }
 	}
 
-	public string PlayerName
+	public PlayerClass Owner
 	{
-		get { return playerName; }
-		set { playerName = value; }
+		get { return owner; }
+		set { owner = value; }
 	}
 }
