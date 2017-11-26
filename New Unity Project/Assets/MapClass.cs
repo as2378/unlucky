@@ -10,24 +10,68 @@ using UnityEngine;
 public class MapClass : MonoBehaviour {
 	//Key = Sector, Data = list of sectors adjacent to key.
 	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>(); 
-
 	/*
 	 * Start: called when the game is initiated.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
 	 */
 	void Start() {
+		GameClass.init ();
 		foreach (Transform child in transform) 
 		{
 			if (child.name.Substring (0, 8) == "Sector #") 
 			{
-                Sector sector = child.GetComponent<Sector>();
+				Sector sector = child.GetComponent<Sector>();
 				List<GameObject> adjacent_sectors = sector.AdjacentSectors;
 
 				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
+		}	
+		this.assignSectorsToPlayers ();
+		this.colourSectors ();
+	}
+
+	private void assignSectorsToPlayers()
+	{
+		List<PlayerClass> players = GameClass.Players;
+
+		foreach (GameObject sector in sector_graph.Keys)
+		{
+			int index = Random.Range (0, players.Count);
+			Sector sectorClass = sector.GetComponent<Sector> ();
+			sectorClass.Owner = players [index];
+			print ("Sector: " + sectorClass.name + " Owner: " + sectorClass.Owner.Name);
 		}
 	}
-		
+
+	public void deselectAll(){
+		foreach (GameObject sector in sector_graph.Keys) 
+		{
+			Sector sectorClass = sector.GetComponent<Sector> ();
+			sector.GetComponent<SpriteRenderer> ().color = sectorClass.Owner.Colour;
+			if (sectorClass.Selected == true) 
+			{
+				sectorClass.Selected = false;
+			}
+		}
+	}
+
+	void Update()
+	{
+		if (Input.GetMouseButtonDown (1)) 
+		{
+			this.deselectAll ();
+		}
+	}
+
+	public void colourSectors()
+	{
+		foreach (GameObject sector in sector_graph.Keys)
+		{
+			Sector sectorClass = sector.GetComponent<Sector> ();
+			sector.GetComponent<SpriteRenderer> ().color = sectorClass.Owner.Colour;
+		}
+	}
+
 	/* 
 	 * getSelectedSector():
 	 * Return:  The sector where it's Selected attribute is true;
@@ -36,15 +80,18 @@ public class MapClass : MonoBehaviour {
 	 */
 	public GameObject getSelectedSector()
 	{
-		foreach (GameObject sector in sector_graph.Keys) {
-			if (sector.GetComponent<Sector>().Selected == true) {
+		foreach (GameObject sector in sector_graph.Keys) 
+		{
+			if (sector.GetComponent<Sector>().Selected == true) 
+			{
 				return sector;
 			}
 		}
 		return null;
 	}
 
-	private void printSectorGraph() {
+	private void printSectorGraph() 
+	{
 		//Printing sectors (for debug);
 		foreach (GameObject key in this.sector_graph.Keys) 
 		{
