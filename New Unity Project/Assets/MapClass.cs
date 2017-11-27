@@ -4,14 +4,16 @@ using UnityEngine;
 
 /*
  * The class is used as a collection of sectors.
- * 
+ * Contains various methods which manipulate the sectors as a whole.
  * It is attached to the 'Map' GameObject
  */
 public class MapClass : MonoBehaviour {
 	//Key = Sector, Data = list of sectors adjacent to key.
 	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>(); 
+
 	/*
-	 * Start: called when the game is initiated.
+	 * Start():
+	 * called when the scene is loaded.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
 	 */
 	void Start() {
@@ -30,6 +32,11 @@ public class MapClass : MonoBehaviour {
 		this.colourSectors ();
 	}
 
+	/*
+	 * assignSectorsToPlayers():
+	 * used for testing sectors and sector highlighing.
+	 * Assigns sectors with a random player from GameClass' player list.
+	 */
 	private void assignSectorsToPlayers()
 	{
 		List<PlayerClass> players = GameClass.Players;
@@ -39,10 +46,14 @@ public class MapClass : MonoBehaviour {
 			int index = Random.Range (0, players.Count);
 			Sector sectorClass = sector.GetComponent<Sector> ();
 			sectorClass.Owner = players [index];
-			print ("Sector: " + sectorClass.name + " Owner: " + sectorClass.Owner.Name);
+			print ("Sector: " + sectorClass.name + " Owner: " + sectorClass.Owner.Name + " Colour: " + sectorClass.Owner.Colour);
 		}
 	}
 
+	/*
+	 *  deselectAll():
+	 * 	used to deselect all sectors and return them to their owner's colour.
+	 */ 
 	public void deselectAll(){
 		foreach (GameObject sector in sector_graph.Keys) 
 		{
@@ -55,6 +66,11 @@ public class MapClass : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * Update():
+	 * called every frame. Checks if the right mouse button is clicked.
+	 * If so, deselectAll is called.
+	 */
 	void Update()
 	{
 		if (Input.GetMouseButtonDown (1)) 
@@ -63,6 +79,10 @@ public class MapClass : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * colourSectors():
+	 * Changes the colour of all sectors within map to their owner's colour.
+	 */
 	public void colourSectors()
 	{
 		foreach (GameObject sector in sector_graph.Keys)
