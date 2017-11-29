@@ -111,7 +111,7 @@ public class Sector : MonoBehaviour
 						{
 							if (adjSect.GetComponent<Sector> ().Owner == this.owner) 
 							{
-								adjSect.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1, 1);
+								adjSect.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
 								sectorsHighlighted++;
 							}
 						} 
@@ -136,7 +136,7 @@ public class Sector : MonoBehaviour
 						//print("No valid moves from clicked sector");
 					}
 				}
-			}
+			} 
 		}
 	}
 
