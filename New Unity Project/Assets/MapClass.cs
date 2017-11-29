@@ -111,6 +111,7 @@ public class MapClass : MonoBehaviour {
         Sector DefenderSector = Defender.GetComponent<Sector>();
         AttackSector.Attack = 10;
         DefenderSector.Defence = 5;
+        print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
         //this is to test it with expected values
         int AttackerA = AttackSector.Attack;
         int DefenderD = DefenderSector.Defence;
@@ -118,10 +119,26 @@ public class MapClass : MonoBehaviour {
         float attack = Random.Range(1f, AttackerA);
         float defence = Random.Range(1f, DefenderD);
         float result = defence - attack;
+        int DamageDone = Mathf.RoundToInt(result);
+        print(attack + "=attack " + defence + "=defence " + result + "=result " + DamageDone);
+        if(result > 0)
+        {
+            AttackSector.Attack = AttackerA - DamageDone;
+            if (result> AttackSector.Attack)
+            {
 
-        print(attack + "=attack " + defence + "=defence " + result + "=result");
+            }
+        }
+        else
+        {
+            DefenderSector.Defence = DefenderD + DamageDone;
+            if (result > DefenderSector.Defence)
+            {
 
+            }
+        }
 
+        print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
 
     }
 }
