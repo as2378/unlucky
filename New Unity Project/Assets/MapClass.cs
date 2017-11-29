@@ -9,14 +9,15 @@ using UnityEngine;
  */
 public class MapClass : MonoBehaviour {
 	//Key = Sector, Data = list of sectors adjacent to key.
-	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>(); 
+	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>();
 
-	/*
+
+    /*
 	 * Start():
 	 * called when the scene is loaded.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
 	 */
-	void Start() {
+    void Start() {
 		GameClass.init ();
 		foreach (Transform child in transform) 
 		{
@@ -135,7 +136,8 @@ public class MapClass : MonoBehaviour {
         //this is to test it with expected values
         int AttackerA = AttackSector.Attack;
         int DefenderD = DefenderSector.Defence;
-        //SceneManager.LoadScene("SliderGame");
+        MarkerMovement sliderGame = GameObject.Find("Marker").GetComponent<MarkerMovement>();
+        sliderGame.StartSlider();
         float attack = Random.Range(1f, AttackerA);
         float defence = Random.Range(1f, DefenderD);
         float result = defence - attack;
@@ -143,17 +145,34 @@ public class MapClass : MonoBehaviour {
         print(attack + "=attack " + defence + "=defence " + result + "=result " + DamageDone);
         if(result > 0)
         {
-            AttackSector.Attack = AttackerA - DamageDone;
-            if (result> AttackSector.Attack)
+            
+            if (Mathf.Abs(DamageDone) > AttackSector.Attack)
             {
-
+                AttackSector.Owner = DefenderSector.Owner;
+                AttackSector.Attack = 1;
+                AttackSector.Defence = 1;
+                DefenderSector.Attack = DefenderSector.Attack - 1;
+                DefenderSector.Defence = DefenderSector.Defence - 1;
+            }
+            else
+            {
+                AttackSector.Attack = AttackerA - DamageDone;
             }
         }
         else
         {
-            DefenderSector.Defence = DefenderD + DamageDone;
-            if (result > DefenderSector.Defence)
+            
+            if (Mathf.Abs(DamageDone) > DefenderSector.Defence)
             {
+                DefenderSector.Owner = AttackSector.Owner;
+                DefenderSector.Attack = 1;
+                DefenderSector.Defence = 1;
+                AttackSector.Attack = AttackSector.Attack - 1;
+                AttackSector.Defence = AttackSector.Defence - 1;
+            }
+            else
+            {
+                DefenderSector.Defence = DefenderD + DamageDone;
 
             }
         }

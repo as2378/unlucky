@@ -13,12 +13,27 @@ public class MarkerMovement : MonoBehaviour
     public float SpeedRange = 10;
     public bool stop = false;
     public float Position;
-    static public float score;
+    public float score;
 
     //	Mathf.Abs( 50 * Mathf.Sin((transform.position.y/8.5)* Mathf.PI *2) +1 ) ;
     public bool up = true;
 
+    public void Start()
+    {
+        GameObject.Find("StopButton").SetActive(false);
+        GameObject.Find("MainCamera").SetActive(true);
+        GameObject.Find("SliderCam").SetActive(false);
+    }
 
+    public void StartSlider()
+    {
+        GameObject.Find("StopButton").SetActive(true);
+        stop = false;
+        transform.position = new Vector3(250, 0, 0);
+        GameObject.Find("MainCamera").SetActive(false);
+        GameObject.Find("SliderCam").SetActive(true);
+        //return true;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -53,14 +68,11 @@ public class MarkerMovement : MonoBehaviour
     public void StopButton()
     {
         stop = true;
-        StartCoroutine(waiter()); ;
-        SceneManager.LoadScene("MainGame");
+        GameObject.Find("StopButton").SetActive(false);
+        GameObject.Find("MainCamera").SetActive(true);
+        GameObject.Find("SliderCam").SetActive(false);
     }
 
-    IEnumerator waiter()
-    {
-        yield return new WaitForSeconds(400);
-    }
-
+    
 
 }
