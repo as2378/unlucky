@@ -102,5 +102,26 @@ public class MapClass : MonoBehaviour {
 			}
 			print (output);
 		}
-	}
+    }
+
+    public void Combat(GameObject Attacker, GameObject Defender)
+    {
+
+        Sector AttackSector = Attacker.GetComponent<Sector>();
+        Sector DefenderSector = Defender.GetComponent<Sector>();
+        AttackSector.Attack = 10;
+        DefenderSector.Defence = 5;
+        //this is to test it with expected values
+        int AttackerA = AttackSector.Attack;
+        int DefenderD = DefenderSector.Defence;
+        //SceneManager.LoadScene("SliderGame");
+        float attack = Random.Range(1f, AttackerA);
+        float defence = Random.Range(1f, DefenderD);
+        float result = defence - attack;
+
+        print(attack + "=attack " + defence + "=defence " + result + "=result");
+
+
+
+    }
 }

@@ -96,6 +96,7 @@ public class Sector : MonoBehaviour
 					{
 						//Attack from originalSector to currentSector (this).
 						print("Attack " + name + " from " + originalSector.name);
+                        map.Combat(originalSector, this.gameObject);
 						map.deselectAll();
 					}
 				}
