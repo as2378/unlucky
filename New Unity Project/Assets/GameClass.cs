@@ -19,11 +19,11 @@ public class GameClass
 	private static int currentPlayer = 0;
 
 	private static List<Color> colours = new List<Color>(new Color[]{
-		new Color(0.8f, 0.3f, 0.3f, 1),new Color(1.0f, 0.8f, 0.4f, 1),
-		new Color(0.5f, 0.9f, 0.4f, 1),new Color(0.4f, 0.9f, 0.9f, 1),
+		new Color(0.7f, 0.3f, 0.3f, 1),new Color(1.0f, 1.0f, 0.4f, 1),
+		new Color(0.5f, 1.0f, 0.5f, 1),new Color(0.4f, 1.0f, 1.0f, 1),
 		new Color(0.4f, 0.4f, 0.9f, 1),new Color(0.9f, 0.4f, 0.9f, 1),
-		new Color(0.9f, 0.6f, 0.4f, 1),new Color(0.4f, 0.8f, 0.7f, 1),
-		new Color(0.5f, 0.5f, 0.5f, 1),new Color(0.7f, 0.8f, 0.5f, 1)});
+		new Color(0.9f, 0.6f, 0.4f, 1),new Color(0.0f, 0.5f, 0.0f, 1),
+		new Color(0.3f, 0.3f, 0.3f, 1),new Color(0.7f, 0.8f, 0.7f, 1)});
 
 	public static void init(){
 		for (int i = 1; i <= 3; i++) 
