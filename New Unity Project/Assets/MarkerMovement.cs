@@ -13,7 +13,7 @@ public class MarkerMovement : MonoBehaviour
     public float SpeedRange = 10;
     public bool stop = false;
     public float Position;
-    public float score;
+    static public float score;
 
     //	Mathf.Abs( 50 * Mathf.Sin((transform.position.y/8.5)* Mathf.PI *2) +1 ) ;
     public bool up = true;
