@@ -18,9 +18,11 @@ public class MapClass : MonoBehaviour
 	 * called when the scene is loaded.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
 	 */
+
 	void Start()
     {
         GameClass.init ();
+
 
 		foreach (Transform child in transform) 
 		{
@@ -142,25 +144,54 @@ public class MapClass : MonoBehaviour
         Sector DefenderSector = Defender.GetComponent<Sector>();
         AttackSector.Attack = 10;
         DefenderSector.Defence = 5;
+        print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
         //this is to test it with expected values
         int AttackerA = AttackSector.Attack;
         int DefenderD = DefenderSector.Defence;
-        //SceneManager.LoadScene("SliderGame");
+        MarkerMovement sliderGame = GameObject.Find("Marker").GetComponent<MarkerMovement>();
+        sliderGame.StartSlider();
         float attack = Random.Range(1f, AttackerA);
         float defence = Random.Range(1f, DefenderD);
         float result = defence - attack;
 
-        print(attack + "=attack " + defence + "=defence " + result + "=result");
-    }
+        int DamageDone = Mathf.RoundToInt(result);
+        print(attack + "=attack " + defence + "=defence " + result + "=result " + DamageDone);
+        if(result > 0)
+        {
+            
+            if (Mathf.Abs(DamageDone) > AttackSector.Attack)
+            {
+                AttackSector.Owner = DefenderSector.Owner;
+                AttackSector.Attack = 1;
+                AttackSector.Defence = 1;
+                DefenderSector.Attack = DefenderSector.Attack - 1;
+                DefenderSector.Defence = DefenderSector.Defence - 1;
+            }
+            else
+            {
+                AttackSector.Attack = AttackerA - DamageDone;
+            }
+        }
+        else
+        {
+            
+            if (Mathf.Abs(DamageDone) > DefenderSector.Defence)
+            {
+                DefenderSector.Owner = AttackSector.Owner;
+                DefenderSector.Attack = 1;
+                DefenderSector.Defence = 1;
+                AttackSector.Attack = AttackSector.Attack - 1;
+                AttackSector.Defence = AttackSector.Defence - 1;
+            }
+            else
+            {
+                DefenderSector.Defence = DefenderD + DamageDone;
 
-    /*
-     * printPlayerName():
-     * For testing purposes only.
-     * Print statement can't be used in the GameClass, thus the GameClass
-     * calls this method.
-     * */
-    public void printPlayerName()
-    {
-        print(GameClass.CurrentPlayer.Name);
+            }
+        }
+
+        print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
+
+
     }
 }
