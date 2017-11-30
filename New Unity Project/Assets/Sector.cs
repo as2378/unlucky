@@ -158,6 +158,14 @@ public class Sector : MonoBehaviour
 		}
 	}
 
+	public void addUnits(int value)
+	{
+		this.attack_value += value;
+		this.defence_value += value;
+		this.units += value;
+	}
+
+
     public int Attack
     {
         get { return attack_value; }

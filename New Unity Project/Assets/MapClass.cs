@@ -142,14 +142,12 @@ public class MapClass : MonoBehaviour
 
         Sector AttackSector = Attacker.GetComponent<Sector>();
         Sector DefenderSector = Defender.GetComponent<Sector>();
-        AttackSector.Attack = 10;
-        DefenderSector.Defence = 5;
         print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
         //this is to test it with expected values
         int AttackerA = AttackSector.Attack;
         int DefenderD = DefenderSector.Defence;
         MarkerMovement sliderGame = GameObject.Find("Marker").GetComponent<MarkerMovement>();
-        sliderGame.StartSlider();
+        //sliderGame.StartSlider();
         float attack = Random.Range(1f, AttackerA);
         float defence = Random.Range(1f, DefenderD);
         float result = defence - attack;

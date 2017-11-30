@@ -96,9 +96,7 @@ public class GameUI : MonoBehaviour
                     GameObject selectedSector = GameObject.Find("Map").GetComponent<MapClass>().getSelectedSector();
                     Sector sectorClass = selectedSector.GetComponent<Sector>();
 
-                    sectorClass.Attack += value;
-                    sectorClass.Defence += value;
-                    sectorClass.Units += value;
+					sectorClass.addUnits (value);
 
                     // Reset the allocation button to the default color
                     ColorBlock colorBlock = input.colors;

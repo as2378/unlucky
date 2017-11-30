@@ -63,7 +63,7 @@ public class GameClass
             GameObject.Find("UICanvas").GetComponent<GameUI>().showGangMembersLeftLabel(true);
         }
 
-        GameObject.Find("Map").GetComponent<MapClass>().printPlayerName();
+        //GameObject.Find("Map").GetComponent<MapClass>().printPlayerName();
     }
 
 	public static List<PlayerClass> Players {
