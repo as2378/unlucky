@@ -7,7 +7,8 @@ using UnityEngine;
  * Contains various methods which manipulate the sectors as a whole.
  * It is attached to the 'Map' GameObject
  */
-public class MapClass : MonoBehaviour {
+public class MapClass : MonoBehaviour
+{
 	//Key = Sector, Data = list of sectors adjacent to key.
 	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>();
 
@@ -17,8 +18,12 @@ public class MapClass : MonoBehaviour {
 	 * called when the scene is loaded.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
 	 */
-    void Start() {
-		GameClass.init ();
+
+	void Start()
+    {
+        GameClass.init ();
+
+
 		foreach (Transform child in transform) 
 		{
 			if (child.name.Substring (0, 8) == "Sector #") 
@@ -29,9 +34,10 @@ public class MapClass : MonoBehaviour {
 				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
 		}	
+
 		this.assignSectorsToPlayers ();
 		this.colourSectors ();
-	}
+    }
 
 	/*
 	 * assignSectorsToPlayers():
@@ -60,11 +66,15 @@ public class MapClass : MonoBehaviour {
 		{
 			Sector sectorClass = sector.GetComponent<Sector> ();
 			sector.GetComponent<SpriteRenderer> ().color = sectorClass.Owner.Colour;
+
 			if (sectorClass.Selected == true) 
 			{
 				sectorClass.Selected = false;
 			}
 		}
+
+        //Hide the allocation UI in case it's gang member allocation phase
+        GameObject.Find("UICanvas").GetComponent<GameUI>().showAllocationUIForm(false);
 	}
 
 	/*
@@ -117,10 +127,12 @@ public class MapClass : MonoBehaviour {
 		foreach (GameObject key in this.sector_graph.Keys) 
 		{
 			string output = key.name + ": ";
+
 			foreach (GameObject adjSect in this.sector_graph[key]) 
 			{
 				output += adjSect.name + " ";
 			}
+
 			print (output);
 		}
     }
@@ -141,6 +153,7 @@ public class MapClass : MonoBehaviour {
         float attack = Random.Range(1f, AttackerA);
         float defence = Random.Range(1f, DefenderD);
         float result = defence - attack;
+
         int DamageDone = Mathf.RoundToInt(result);
         print(attack + "=attack " + defence + "=defence " + result + "=result " + DamageDone);
         if(result > 0)
@@ -178,6 +191,7 @@ public class MapClass : MonoBehaviour {
         }
 
         print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
+
 
     }
 }
