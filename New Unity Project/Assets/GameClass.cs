@@ -16,25 +16,27 @@ public class GameClass
 	public static int GameState = ATTACK;
 
 	private static List<PlayerClass> players = new List<PlayerClass>();
-	private static int currentPlayer = 0;
+	private static int currentPlayer = -1;
 
-	private static List<Color> colours = new List<Color>(new Color[]{
-		new Color(0.7f, 0.3f, 0.3f, 1),new Color(1.0f, 1.0f, 0.4f, 1),
-		new Color(0.5f, 1.0f, 0.5f, 1),new Color(0.4f, 1.0f, 1.0f, 1),
-		new Color(0.4f, 0.4f, 0.9f, 1),new Color(0.9f, 0.4f, 0.9f, 1),
-		new Color(0.9f, 0.6f, 0.4f, 1),new Color(0.0f, 0.5f, 0.0f, 1),
-		new Color(0.3f, 0.3f, 0.3f, 1),new Color(0.7f, 0.8f, 0.7f, 1)});
+	private static List<Color> colours = new List<Color>(new Color[] {
+		new Color(0.7f, 0.3f, 0.3f, 1), new Color(1.0f, 1.0f, 0.4f, 1),
+		new Color(0.5f, 1.0f, 0.5f, 1), new Color(0.4f, 1.0f, 1.0f, 1),
+		new Color(0.4f, 0.4f, 0.9f, 1), new Color(0.9f, 0.4f, 0.9f, 1),
+		new Color(0.9f, 0.6f, 0.4f, 1), new Color(0.0f, 0.5f, 0.0f, 1),
+		new Color(0.3f, 0.3f, 0.3f, 1), new Color(0.7f, 0.8f, 0.7f, 1)});
 
-	public static void init(){
+	public static void init() 
+	{
 		for (int i = 1; i <= 3; i++) 
 		{
 			PlayerClass player = new PlayerClass ("Plr" + i, generateColour ());
 			players.Add (player);
 		}
 
+        changeTurn();
 	}
 
-	public static Color generateColour()
+	private static Color generateColour()
 	{
 		int index = Random.Range (0, colours.Count);
 		Color colour = colours [index];
@@ -54,7 +56,15 @@ public class GameClass
 		{
 			currentPlayer = 0;
 		}
-	}
+
+        if(!players[currentPlayer].Allocated)
+        {
+            //Show the "gang members left" label
+            GameObject.Find("UICanvas").GetComponent<GameUI>().showGangMembersLeftLabel(true);
+        }
+
+        GameObject.Find("Map").GetComponent<MapClass>().printPlayerName();
+    }
 
 	public static List<PlayerClass> Players {
 		get { return players; }

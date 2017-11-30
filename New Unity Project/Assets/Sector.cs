@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 /*
  * The class is used as a component script for sectors
@@ -18,7 +19,6 @@ public class Sector : MonoBehaviour
 	private bool selected = false;
 
 	private PlayerClass owner;
-
 
     // Following fields are set via the inspector in Unity
     public List<int> adjacent_sector_ids = new List<int>();
@@ -75,13 +75,12 @@ public class Sector : MonoBehaviour
 	 */
 	void OnMouseDown()
 	{
-
 		if (Input.GetMouseButtonDown (0)) 
-
 		{
 			MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
 			GameObject originalSector = map.getSelectedSector ();
-			if (originalSector != null) 
+
+			if (originalSector != null && this.owner.Allocated) 
 			{
 				if (this.adjacent_sectors.Contains (originalSector)) 
 				{
@@ -103,9 +102,26 @@ public class Sector : MonoBehaviour
 			}
 			else 
 			{
-				if (this.owner == GameClass.CurrentPlayer) 
+                if (this.owner == GameClass.CurrentPlayer) 
 				{
+					if (!this.owner.Allocated) 
+					{
+                        /*
+                         * Deselecting all sectors at this point lets the player
+                         * allocate members more easily by just left-clicking through the sectors
+                         * */
+                        GameObject.Find("Map").GetComponent<MapClass>().deselectAll();
+
+                        GameObject.Find("UICanvas").GetComponent<GameUI>().showAllocationUIForm(true);
+                        SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
+						sprite.color = new Color (0, 0, 0, 1);
+                        this.selected = true;
+
+						return;
+					}
+
 					int sectorsHighlighted = 0;
+
 					foreach (GameObject adjSect in adjacent_sectors) 
 					{
 						if (GameClass.GameState == GameClass.MOVEMENT) 
@@ -125,6 +141,7 @@ public class Sector : MonoBehaviour
 							}
 						}
 					}
+
 					if (sectorsHighlighted > 0) 
 					{
 						SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
