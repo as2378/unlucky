@@ -18,11 +18,9 @@ public class MapClass : MonoBehaviour
 	 * called when the scene is loaded.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
 	 */
-
 	void Start()
     {
-        GameClass.init ();
-
+		GameClass.generatePlayers ();
 
 		foreach (Transform child in transform) 
 		{
@@ -53,7 +51,7 @@ public class MapClass : MonoBehaviour
 			int index = Random.Range (0, players.Count);
 			Sector sectorClass = sector.GetComponent<Sector> ();
 			sectorClass.Owner = players [index];
-			print ("Sector: " + sectorClass.name + " Owner: " + sectorClass.Owner.Name + " Colour: " + sectorClass.Owner.Colour);
+			//print ("Sector: " + sectorClass.name + " Owner: " + sectorClass.Owner.Name + " Colour: " + sectorClass.Owner.Colour);
 		}
 	}
 
@@ -120,22 +118,6 @@ public class MapClass : MonoBehaviour
 		}
 		return null;
 	}
-
-	private void printSectorGraph() 
-	{
-		//Printing sectors (for debug);
-		foreach (GameObject key in this.sector_graph.Keys) 
-		{
-			string output = key.name + ": ";
-
-			foreach (GameObject adjSect in this.sector_graph[key]) 
-			{
-				output += adjSect.name + " ";
-			}
-
-			print (output);
-		}
-    }
 
     public void Combat(GameObject Attacker, GameObject Defender)
     {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 /*
- * The class is used as a component script for sectors
+ * The class is used as a component script for sectors.
  * 
  * When attached to a sector, properties have to be set
  * in the inspector in Unity (unit spawn position, the names of
  * adjacent sectors, whether the sector is a college) 
- * */
+ */
 
 public class Sector : MonoBehaviour
 {
@@ -25,9 +25,10 @@ public class Sector : MonoBehaviour
     public bool is_college;
 
 	/*
-	 * This method is called at the start of the game.
+	 * Start(): This method is called at the start of the game.
 	 * It takes the adjacent_sector_ids from the inspector and converts them into a list
 	 * of adjacent sector GameObjects.
+	 * Throws: System.Exception
 	 */
     void Start()
     {
@@ -75,7 +76,7 @@ public class Sector : MonoBehaviour
 	 */
 	void OnMouseDown()
 	{
-		if (Input.GetMouseButtonDown (0)) 
+		if (Input.GetMouseButtonDown (0)) //has the left mouse button been pressed.
 		{
 			MapClass map = GameObject.Find ("Map").GetComponent<MapClass> ();
 			GameObject originalSector = map.getSelectedSector ();
@@ -110,7 +111,7 @@ public class Sector : MonoBehaviour
                          * Deselecting all sectors at this point lets the player
                          * allocate members more easily by just left-clicking through the sectors
                          * */
-                        GameObject.Find("Map").GetComponent<MapClass>().deselectAll();
+                        map.deselectAll();
 
                         GameObject.Find("UICanvas").GetComponent<GameUI>().showAllocationUIForm(true);
                         SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
@@ -121,7 +122,7 @@ public class Sector : MonoBehaviour
 					}
 
 					int sectorsHighlighted = 0;
-
+					//Highlight adjacent sectors based on the turn phase (MOVEMENT/ATTACK).
 					foreach (GameObject adjSect in adjacent_sectors) 
 					{
 						if (GameClass.GameState == GameClass.MOVEMENT) 
@@ -141,7 +142,8 @@ public class Sector : MonoBehaviour
 							}
 						}
 					}
-
+					//Check if there are valid moves from current sector for the turn phase.
+					// If so: highlight & select current sector.
 					if (sectorsHighlighted > 0) 
 					{
 						SpriteRenderer sprite = GetComponent<SpriteRenderer> ();
@@ -164,8 +166,7 @@ public class Sector : MonoBehaviour
 		this.defence_value += value;
 		this.units += value;
 	}
-
-
+		
     public int Attack
     {
         get { return attack_value; }

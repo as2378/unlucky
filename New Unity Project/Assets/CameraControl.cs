@@ -16,10 +16,21 @@ public class CameraControl : MonoBehaviour {
 
 	private Bounds mapBounds;
 
+	/*
+	 * Start():
+	 * When the game is initialised, the Map sprite's bounds are stored.
+	 */
 	void Start()
 	{
 		this.mapBounds = GameObject.Find ("Map").GetComponent<SpriteRenderer> ().bounds;
 	}
+
+	/*
+	 * FixedUpdate(): Called every frame.
+	 * 
+	 * Moves the camera by amount 'speed' in the directions specified by getMovementDirection() 
+	 * as long as the camera view stays within the Maps's bounds.
+	 */ 
 
 	void FixedUpdate () 
 	{
@@ -93,6 +104,5 @@ public class CameraControl : MonoBehaviour {
 			directions.Add ("Up");
 		}
 		return directions;
-	}
-		
+	}		
 }

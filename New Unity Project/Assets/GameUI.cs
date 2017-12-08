@@ -3,6 +3,11 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
+/*
+ * This class encapsulates the behaviour of the game’s user interface.
+ * The class shows/hides the allocation input fields and handles the execution of the allocation button clicks.
+ */ 
+
 public class GameUI : MonoBehaviour
 {
     private GameObject gangMembersLeftLabel;

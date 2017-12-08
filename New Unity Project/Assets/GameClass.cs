@@ -25,7 +25,13 @@ public class GameClass
 		new Color(0.9f, 0.6f, 0.4f, 1), new Color(0.0f, 0.5f, 0.0f, 1),
 		new Color(0.3f, 0.3f, 0.3f, 1), new Color(0.7f, 0.8f, 0.7f, 1)});
 
-	public static void init() 
+	/*
+	 * generatePlayers(): Called by MapClass at the start of a game.
+	 * 
+	 * Generates three players and adds them to the players list.
+	 * Currently used for testing.
+	 */ 
+	public static void generatePlayers() 
 	{
 		for (int i = 1; i <= 3; i++) 
 		{
@@ -36,6 +42,12 @@ public class GameClass
         changeTurn();
 	}
 
+	/*
+	 * generateColour(): used by generatePlayers() to assign the players a colour.
+	 * returns: a Color value chosen from the 'colours' list.
+	 * 
+	 * Picks a random colour from the colours list and pops it from the list.
+	 */ 
 	private static Color generateColour()
 	{
 		int index = Random.Range (0, colours.Count);
@@ -44,11 +56,19 @@ public class GameClass
 		return colour;
 	}
 
+	/*
+	 * CurrentPlayer:
+	 * get: returns the class for the player whos turn it is.
+	 */ 
 	public static PlayerClass CurrentPlayer
 	{
 		get{ return players[currentPlayer]; }
 	}
 
+	/*
+	 * ChangeTurn():
+	 * Increments the currentPlayer variable, and loops around to 0 if it reaches the end of the player list.
+	 */
 	public static void changeTurn()
 	{
 		currentPlayer++;
