@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-/*
+/**
  * The class used to control the camera movements within the game.
  * 
  * CameraControl enables the camera to be moved by positioning the mouse cursor at the edge of the screen.
@@ -16,7 +16,7 @@ public class CameraControl : MonoBehaviour {
 
 	private Bounds mapBounds;
 
-	/*
+	/**
 	 * Start():
 	 * When the game is initialised, the Map sprite's bounds are stored.
 	 */
@@ -25,7 +25,7 @@ public class CameraControl : MonoBehaviour {
 		this.mapBounds = GameObject.Find ("Map").GetComponent<SpriteRenderer> ().bounds;
 	}
 
-	/*
+	/**
 	 * FixedUpdate(): Called every frame.
 	 * 
 	 * Moves the camera by amount 'speed' in the directions specified by getMovementDirection() 
@@ -72,7 +72,7 @@ public class CameraControl : MonoBehaviour {
 	}
 
 
-	/*
+	/**
 	 * getMovementDirection: called within FixedUpdate()
 	 * Returns: List of strings containing textual representations of the directions the player want the camera to move in.
 	 * 

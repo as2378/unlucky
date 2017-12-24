@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
+/**
  * The class is used to control the gameplay
  * 
  * Currently, this class keeps track of the players, whose turn it is and
@@ -25,11 +25,11 @@ public class GameClass
 		new Color(0.9f, 0.6f, 0.4f, 1), new Color(0.0f, 0.5f, 0.0f, 1),
 		new Color(0.3f, 0.3f, 0.3f, 1), new Color(0.7f, 0.8f, 0.7f, 1)});
 
-	/*
+	/**
 	 * generatePlayers(): Called by MapClass at the start of a game.
 	 * 
 	 * Generates three players and adds them to the players list.
-	 * Currently used for testing.
+	 * Initialises allocateGangMembersToPlayers and the allocation UI.
 	 */ 
 	public static void generatePlayers() 
 	{
@@ -38,11 +38,9 @@ public class GameClass
 			PlayerClass player = new PlayerClass ("Plr" + i, generateColour ());
 			players.Add (player);
 		}
-
-        changeTurn();
 	}
 
-	/*
+	/**
 	 * generateColour(): used by generatePlayers() to assign the players a colour.
 	 * returns: a Color value chosen from the 'colours' list.
 	 * 
@@ -56,7 +54,7 @@ public class GameClass
 		return colour;
 	}
 
-	/*
+	/**
 	 * CurrentPlayer:
 	 * get: returns the class for the player whos turn it is.
 	 */ 
@@ -65,7 +63,7 @@ public class GameClass
 		get{ return players[currentPlayer]; }
 	}
 
-	/*
+	/**
 	 * ChangeTurn():
 	 * Increments the currentPlayer variable, and loops around to 0 if it reaches the end of the player list.
 	 */
@@ -77,14 +75,24 @@ public class GameClass
 			currentPlayer = 0;
 		}
 
-        if(!players[currentPlayer].Allocated)
-        {
-            //Show the "gang members left" label
-            GameObject.Find("UICanvas").GetComponent<GameUI>().showGangMembersLeftLabel(true);
-        }
-
-        //GameObject.Find("Map").GetComponent<MapClass>().printPlayerName();
+		if(!players[currentPlayer].Allocated)
+		{
+			//Show the "gang members left" label
+			GameObject.Find("UICanvas").GetComponent<GameUI>().showGangMembersLeftLabel(true);
+		}
     }
+
+	/**
+	 * allocateGangMembersToPlayers:
+	 * Calls giveNewGangMembers for each player in the game. This updates the number of gang members they can allocate.
+	 */
+	public static void allocateGangMembersToPlayers()
+	{
+		foreach (PlayerClass player in GameClass.Players) 
+		{
+			player.giveNewGangMembers ();
+		}
+	}
 
 	public static List<PlayerClass> Players {
 		get { return players; }

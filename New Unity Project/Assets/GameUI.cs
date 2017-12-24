@@ -3,18 +3,17 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
-/*
+/**
  * This class encapsulates the behaviour of the game’s user interface.
  * The class shows/hides the allocation input fields and handles the execution of the allocation button clicks.
  */ 
-
 public class GameUI : MonoBehaviour
 {
     private GameObject gangMembersLeftLabel;
     private GameObject gangMemberInputField;
     private GameObject allocateButton;
 
-    /*
+	/**
      * Awake():
      * Initializes the game UI.
      * 
@@ -34,11 +33,11 @@ public class GameUI : MonoBehaviour
         showAllocationUIForm(false);
     }
 
-    /*
+	/**
      * showGangMembersLeftLabel():
      * Makes a block visible that represents the number of gang members
      * left for allocation
-     * */
+     */
     public void showGangMembersLeftLabel(bool active)
     {
         gangMembersLeftLabel.SetActive(active);
@@ -50,29 +49,29 @@ public class GameUI : MonoBehaviour
         }
     }
 
-    /*
+	/**
      * updateGangMembersLeftLabel():
      * Used for updating the label.
-     * */
+     */
     public void updateGangMembersLeftLabel()
     {
         gangMembersLeftLabel.GetComponentInChildren<Text>().text = "Gang members left: " + GameClass.CurrentPlayer.GangMembersLeft;
     }
 
-    /*
+	/**
      * showAllocationUIForm():
      * Makes both the input field and allocation button (in)visible
-     * */
+     */
     public void showAllocationUIForm(bool active)
     {
         gangMemberInputField.SetActive(active);
         allocateButton.SetActive(active);
     }
 
-    /*
+	/**
      * onAllocationButtonClicked()
      * Used as an event listener for the allocation button.
-     * */
+     */
     public void onAllocateButtonClicked()
     {
         Button button = allocateButton.GetComponent<Button>();
@@ -127,7 +126,6 @@ public class GameUI : MonoBehaviour
                 // Reset the placeholder of the input field
                 input.text = "";
             }
-
             button.interactable = true;
         }
     }

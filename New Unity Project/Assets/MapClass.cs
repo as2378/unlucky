@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
+/**
  * The class is used as a collection of sectors.
  * Contains various methods which manipulate the sectors as a whole.
  * It is attached to the 'Map' GameObject
@@ -12,8 +12,7 @@ public class MapClass : MonoBehaviour
 	//Key = Sector, Data = list of sectors adjacent to key.
 	private Dictionary<GameObject,List<GameObject>> sector_graph = new Dictionary<GameObject,List<GameObject>>();
 
-
-    /*
+	/**
 	 * Start():
 	 * called when the scene is loaded.
 	 * Puts all sectors into the graph sector_graph (stored as a dictionary);
@@ -32,12 +31,13 @@ public class MapClass : MonoBehaviour
 				this.sector_graph.Add(child.gameObject,adjacent_sectors);
 			}
 		}	
-
 		this.assignSectorsToPlayers ();
 		this.colourSectors ();
+		GameClass.allocateGangMembersToPlayers ();
+		GameClass.changeTurn ();
     }
 
-	/*
+	/**
 	 * assignSectorsToPlayers():
 	 * used for testing sectors and sector highlighing.
 	 * Assigns sectors with a random player from GameClass' player list.
@@ -55,9 +55,9 @@ public class MapClass : MonoBehaviour
 		}
 	}
 
-	/*
-	 *  deselectAll():
-	 * 	used to deselect all sectors and return them to their owner's colour.
+	/**
+	 * deselectAll():
+	 * used to deselect all sectors and return them to their owner's colour.
 	 */ 
 	public void deselectAll(){
 		foreach (GameObject sector in sector_graph.Keys) 
@@ -75,7 +75,7 @@ public class MapClass : MonoBehaviour
         GameObject.Find("UICanvas").GetComponent<GameUI>().showAllocationUIForm(false);
 	}
 
-	/*
+	/**
 	 * Update():
 	 * called every frame. Checks if the right mouse button is clicked.
 	 * If so, deselectAll is called.
@@ -88,7 +88,7 @@ public class MapClass : MonoBehaviour
 		}
 	}
 
-	/*
+	/**
 	 * colourSectors():
 	 * Changes the colour of all sectors within map to their owner's colour.
 	 */
@@ -101,7 +101,7 @@ public class MapClass : MonoBehaviour
 		}
 	}
 
-	/* 
+	/**
 	 * getSelectedSector():
 	 * Return:  The sector where it's Selected attribute is true;
 	 * 			otherwise: null. 
@@ -121,7 +121,6 @@ public class MapClass : MonoBehaviour
 
     public void Combat(GameObject Attacker, GameObject Defender)
     {
-
         Sector AttackSector = Attacker.GetComponent<Sector>();
         Sector DefenderSector = Defender.GetComponent<Sector>();
         print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
@@ -137,8 +136,7 @@ public class MapClass : MonoBehaviour
         int DamageDone = Mathf.RoundToInt(result);
         print(attack + "=attack " + defence + "=defence " + result + "=result " + DamageDone);
         if(result > 0)
-        {
-            
+        {      
             if (Mathf.Abs(DamageDone) > AttackSector.Attack)
             {
                 AttackSector.Owner = DefenderSector.Owner;
@@ -153,8 +151,7 @@ public class MapClass : MonoBehaviour
             }
         }
         else
-        {
-            
+        {      
             if (Mathf.Abs(DamageDone) > DefenderSector.Defence)
             {
                 DefenderSector.Owner = AttackSector.Owner;
@@ -169,9 +166,6 @@ public class MapClass : MonoBehaviour
 
             }
         }
-
         print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
-
-
     }
 }
