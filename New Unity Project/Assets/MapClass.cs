@@ -120,52 +120,65 @@ public class MapClass : MonoBehaviour
 	}
 
     public void Combat(GameObject Attacker, GameObject Defender)
-    {
-        Sector AttackSector = Attacker.GetComponent<Sector>();
-        Sector DefenderSector = Defender.GetComponent<Sector>();
-        print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
-        //this is to test it with expected values
-        int AttackerA = AttackSector.Attack;
-        int DefenderD = DefenderSector.Defence;
+    {  
         MarkerMovement sliderGame = GameObject.Find("Marker").GetComponent<MarkerMovement>();
-        //sliderGame.StartSlider();
-        float attack = Random.Range(1f, AttackerA);
-        float defence = Random.Range(1f, DefenderD);
-        float result = defence - attack;
-
-        int DamageDone = Mathf.RoundToInt(result);
-        print(attack + "=attack " + defence + "=defence " + result + "=result " + DamageDone);
-        if(result > 0)
-        {      
-            if (Mathf.Abs(DamageDone) > AttackSector.Attack)
-            {
-                AttackSector.Owner = DefenderSector.Owner;
-                AttackSector.Attack = 1;
-                AttackSector.Defence = 1;
-                DefenderSector.Attack = DefenderSector.Attack - 1;
-                DefenderSector.Defence = DefenderSector.Defence - 1;
-            }
-            else
-            {
-                AttackSector.Attack = AttackerA - DamageDone;
-            }
-        }
-        else
-        {      
-            if (Mathf.Abs(DamageDone) > DefenderSector.Defence)
-            {
-                DefenderSector.Owner = AttackSector.Owner;
-                DefenderSector.Attack = 1;
-                DefenderSector.Defence = 1;
-                AttackSector.Attack = AttackSector.Attack - 1;
-                AttackSector.Defence = AttackSector.Defence - 1;
-            }
-            else
-            {
-                DefenderSector.Defence = DefenderD + DamageDone;
-
-            }
-        }
-        print(DefenderSector.Defence + "=Defence" + AttackSector.Attack + "=Attack ");
+		sliderGame.StartSlider (Attacker, Defender);
     }
+
+	public void calculateCombatOutcome(GameObject attacker, GameObject defender, float attackMultiplier, float defenceMultiplier)
+	{
+		Sector attackSector = attacker.GetComponent<Sector>();
+		Sector defenderSector = defender.GetComponent<Sector>();
+		print(defenderSector.Defence + "=Defence  " + attackSector.Attack + "=Attack");
+		//this is to test it with expected values
+		int attackerA = attackSector.Attack;
+		int defenderD = defenderSector.Defence;
+
+		float attack = Random.Range(attackerA/2, attackerA);
+		attack += attack * attackMultiplier;
+		float defence = Random.Range(defenderD/2, defenderD);
+		defence += defence * defenceMultiplier;
+
+		print ("attackMultiplier x" + attackMultiplier + "  defenceMultiplier x" + defenceMultiplier);
+
+		int DamageDone = Mathf.Abs(Mathf.RoundToInt(defence - attack));
+		print(attack + "=attack   " + defence + "=defence   " + DamageDone + "=damageDone");
+		if(defence > attack)
+		{      
+			if (DamageDone > attackerA)
+			{
+				attackSector.Owner = defenderSector.Owner;
+				attacker.GetComponent<SpriteRenderer> ().color = defenderSector.Owner.Colour;
+				attackSector.Units = 1;
+				//defenderSector.Attack = defenderSector.Attack - 1;
+				//defenderSector.Defence = defenderSector.Defence - 1;
+				defenderSector.addUnits(-1);
+			}
+			else if (DamageDone < attackerA)
+			{
+				//attackSector.Attack = attackerA - DamageDone;
+				attackSector.addUnits (-DamageDone);
+				defenderSector.addUnits (-DamageDone);
+			}
+		}
+		else if(attack > defence)
+		{      
+			if (DamageDone > defenderD)
+			{
+				defenderSector.Owner = attackSector.Owner;
+				defender.GetComponent<SpriteRenderer> ().color = attackSector.Owner.Colour;
+				defenderSector.Units = 1;
+				//attackSector.Attack = attackSector.Attack - 1;
+				//attackSector.Defence = attackSector.Defence - 1;
+				attackSector.addUnits(-1);
+			}
+			else if (DamageDone < defenderD)
+			{
+				//defenderSector.Defence = defenderD + DamageDone;
+				defenderSector.addUnits(-DamageDone);
+				attackSector.addUnits (-DamageDone);
+			}
+		}
+		print(defenderSector.Defence + "=Defence" + attackSector.Attack + "=Attack ");
+	}
 }

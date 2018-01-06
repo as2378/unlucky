@@ -12,9 +12,9 @@ using UnityEngine.UI;
 
 public class Sector : MonoBehaviour
 {
-    private int attack_value = 0;
-    private int defence_value = 0;
-    private int units = 0;
+    private int attack_value = 1;
+    private int defence_value = 1;
+    private int units = 1;
     private List<GameObject> adjacent_sectors = new List<GameObject>();
 	private bool selected = false;
 
@@ -215,7 +215,12 @@ public class Sector : MonoBehaviour
     public int Units
     {
         get { return units; }
-        set { units = value; }
+        set 
+		{ 
+			units = value;
+			attack_value = value;
+			defence_value = value;
+		}
     }
 
     public List<GameObject> AdjacentSectors
