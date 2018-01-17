@@ -104,7 +104,7 @@ public class SectorTests
 	/**
 	 * findAnAdjacentSector:
 	 * Returns: a sector adjacent to 'selectedSector', either owned by the current player or not (depending on ownedByCurrentPlayer)
-	 * Throws: Exception if no sector can be found.
+	 * Throws: Exception if there is only 1 player.
 	 */
 	private GameObject findAdjacentSector(GameObject selectedSector,bool ownedByCurrentPlayer)
 	{
@@ -113,6 +113,16 @@ public class SectorTests
 			if ((adjSect.GetComponent<Sector> ().Owner == GameClass.CurrentPlayer) == ownedByCurrentPlayer) 
 			{
 				return adjSect;
+			}
+		}
+		foreach (PlayerClass player in GameClass.Players) 
+		{
+			if ((player == GameClass.CurrentPlayer) == ownedByCurrentPlayer) 
+			{
+				GameObject newSector = selectedSector.GetComponent<Sector> ().AdjacentSectors [0];
+				newSector.GetComponent<Sector>().Owner = player;
+				newSector.GetComponent<SpriteRenderer> ().color = player.Colour;
+				return newSector;
 			}
 		}
 		throw new Exception ("Unable to find any sectors to test");
@@ -362,11 +372,11 @@ public class SectorTests
 		GameObject map = GameObject.Find ("Map");
 		Sector firstSector = this.setupHighlightTest (map, true);
 		firstSector.clickSector ();
-
 		GameObject secondSector = findAdjacentSector (firstSector.gameObject, true);
 		secondSector.GetComponent<Sector>().clickSector ();
 		try
 		{
+			
 			Assert.IsTrue(firstSector.Selected);
 			Assert.IsFalse(secondSector.GetComponent<Sector>().Selected);
 			testSectorHighlighting(map,firstSector,false,new Color(1,0,0));
