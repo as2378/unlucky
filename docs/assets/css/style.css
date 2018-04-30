@@ -54,7 +54,7 @@ body {
     line-height: 2.5;
 }
 
-.block ul a {
+.block ul a, .button {
     background-color: #FF8811;
     width: auto;
     height: auto;
@@ -67,4 +67,13 @@ body {
     color: #F7F7FF;
     text-decoration: none;
     display: inline-block;
+}
+
+.button {
+    display: block;
+    width: 95%;
+    font-size: 14px;
+    margin: 5px auto;
+    padding: 5px;  
+    text-align:center;
 }
